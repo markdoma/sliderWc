@@ -14,6 +14,14 @@
 
                 this.setColor(this.backgroundcolor);
                 this.refreshSlider(this.value);
+
+                document.addEventListener('mousemove', e=> this.eventHandler(e));
+
+                document.addEventListener('mouseup', e=> this.eventHandler(e));
+
+                this.addEventListener('mousedown', e=> this.eventHandler(e));
+
+                
             }
 
             static get observedAttributes(){
