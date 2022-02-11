@@ -7,18 +7,65 @@
     <title>Slider Component</title>
 
     <script>
-        class Slider extends HTMLElement{
+        class Slider extends HTMLElement {
             connectedCallback() {
-                this.innerHTML = '<div class="bg-overlay"></div><div class="thumb"></div>';
+                this.setColor(this.backgroundcolor);
+                this.refreshSlider(this.value);
+                this.innerHTML ='<div class="bg-overlay"></div><div class="thumb"></div>';
             }
-        }
 
+            static get observedAttributes(){
+                return ['value', 'backgroundcolor'];
+            }
+
+            set value(val){
+                this.setAttribute('value', val);
+            }
+
+            get value(){
+                return this.getAttribute('value');
+            }
+            set backgroundcolor(val){
+                this.setAttribute('backgroundcolor',val);
+            }
+
+            get backgroundcolor(){
+                return this.getAttribute('backgroundcolor');
+            }
+
+
+            atttibuteChangedCallback(name, oldVal, newValue) {
+                switch(name) {
+                    case 'value':
+                        this.refreshSlider(newValue);
+                        break;
+                    case 'backgroundcolor':
+                        this.setColor(newValue)
+                        break;
+                }
+            }
+
+            setColor(color){
+                if(this.querySelector('.bg-overlay')){
+                    this.querySelector('.bg-overlay').style.background = `linear-gradient(to right, ${color} 0%, ${color}00 100%)`;
+                }
+            }
+
+            refreshSlider(value){
+                if(this.querySelector('.thumb')){
+                    this.querySelector('.thumb').style.left = (value/100 * this.offsetWidth - this.querySelector('.thumb').offsetWidth/2) + 'px';
+                }
+            }
+
+          
+        }
         if(!customElements.get('wcia-slider')){
             customElements.define('wcia-slider', Slider);
         }
     </script>
+
 </head>
 <body>
-    <wcia-slider></wcia-slider>
+    <wcia-slider backgroundcolor="#0000ff" value="70"></wcia-slider>
 </body>
 </html>
