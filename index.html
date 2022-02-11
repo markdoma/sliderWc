@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Component</title>
+
+    <script>
+        class Slider extends HTMLElement{
+            connectedCallback() {
+                this.innerHTML = '<div class="bg-overlay"></div><div class="thumb"></div>';
+            }
+        }
+
+        if(!customElements.get('wcia-slider')){
+            customElements.define('wcia-slider', Slider);
+        }
+    </script>
+</head>
+<body>
+    <wcia-slider></wcia-slider>
+</body>
+</html>
