@@ -11,7 +11,9 @@
             connectedCallback() {
                 
                 this.innerHTML ='<div class="bg-overlay"></div><div class="thumb"></div>';
-
+                document.addEventListener('mousemove', e=>this.eventHandler(e));
+                document.addEventListener('mouseup', e=>this.eventHandler(e))
+                this.addEventListener('mousedown', e=> this.eventHandler(e))
                 this.setColor(this.backgroundcolor);
                 this.refreshSlider(this.value);
             }
@@ -60,6 +62,45 @@
             }
 
           
+          //Function to handle events and a function to update the slider percentage
+          updateX(x) {
+              let hPos = x- this.querySelector('.thumb').offsetWidth/2;
+              if(hPos > this.offsetWidth) {
+                  hPos = this.offsetWidth;
+              }
+
+              if(hPos < 0) {
+                  hPos = 0;
+              }
+              this.value = (hPos / this.offsetWidth) * 100;
+          }
+
+          eventHandler(e){
+              const bounds = this.getBoundingClientRect();
+              const x = e.clientX - bounds.left;
+
+              switch(e.type){
+                  case 'mousedown':
+                  this.isDragging = true;
+                  this.updateX(x);
+                  this.refreshSlider(this.value)
+                  break;
+
+                  case 'mouseup':
+                  this.isDragging = false;
+                  break;
+
+                  case 'mousemove':
+                  if(this.isDragging){
+                      this.updateX(x);
+                      this.refreshSlider(this.value);
+                  }
+                  break;
+              }
+
+          }
+
+
         }
         if(!customElements.get('wcia-slider')){
             customElements.define('wcia-slider', Slider);
@@ -103,6 +144,6 @@
 </head>
 <body>
 
-    <wcia-slider backgroundcolor="#00ff51" value="20"></wcia-slider>
+    <wcia-slider backgroundcolor="#ff004c" value="20"></wcia-slider>
 </body>
 </html>
